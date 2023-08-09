@@ -16,6 +16,7 @@ Some module might be written in Python or Scala (leverage the development speed 
 - BTree index
 - Cluster index
 - Join
+  - Nested loop join
   - Hash join
   - merge join
 - SQL syntax parser and RepL
