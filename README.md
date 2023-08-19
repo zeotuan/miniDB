@@ -19,7 +19,17 @@ Some module might be written in Python or Scala (leverage the development speed 
   - Nested loop join
   - Hash join
   - merge join
-- SQL syntax parser and RepL
+- Query Processer
+  - Parser: parsed SQL query
+  - Rewriter: Simplified written query
+  - Executor: Generate execution plan
+  - Optimizor
+- Storage Manager
+  - Data Access
+  - Buffer Manager
+  - Transaction Manager
+  - Recovery Manager
+- RepL
 - XML support
 - Json support
 - Key constraint
@@ -28,5 +38,4 @@ Some module might be written in Python or Scala (leverage the development speed 
 - Transaction support + T-SQL
 - Concurrency support
   - 2PL
-- Query Plan execution and optimization
 - Distributed Query Processing
