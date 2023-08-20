@@ -9,6 +9,11 @@ Some module might be written in Python or Scala (leverage the development speed 
 
 ## Feature road map (in no particular order but of course some cannot be done without the other)
 - CRUD operation
+  - Select
+  - Update
+  - Insert
+  - Delete
+  - Compare and Set
 - Hash index
   - Static hashing
   - Extensible hashing
