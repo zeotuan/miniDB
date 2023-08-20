@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, Union
 from table import Table
 
 
@@ -11,15 +11,15 @@ class DataBase(ABC):
         self.__dir__
 
     @abstractmethod
-    def save_dbs(self):
+    def save_dbs(self) -> None:
         pass
 
     @abstractmethod
-    def save_lock(self):
+    def save_lock(self) -> None:
         pass
 
     @abstractmethod
-    def load_db(self):
+    def load_db(self) -> None:
         pass
 
     @abstractmethod
@@ -31,11 +31,11 @@ class DataBase(ABC):
         p_key: Optional[str] = None,
         unique=None,
         load: Optional[list] = None,
-    ):
+    ) -> None:
         pass
 
     @abstractmethod
-    def drop_table(self, name: str):
+    def drop_table(self, name: str) -> None:
         pass
 
     @abstractmethod
@@ -47,21 +47,35 @@ class DataBase(ABC):
         col_types: list[type],
         p_key: Optional[str] = None,
         infer_schema: bool = False,
-    ):
+    ) -> None:
         pass
 
     @abstractmethod
-    def save_table(self, name: str, path: str):
+    def save_table(self, name: str, path: str) -> None:
         pass
 
     @abstractmethod
-    def is_table_locked(self, name: str):
+    def is_table_locked(self, name: str) -> bool:
         pass
 
     @abstractmethod
-    def lock_table(self, name: str):
+    def lock_table(self, name: str) -> None:
         pass
 
     @abstractmethod
-    def unlock_table(self, name: str):
+    def unlock_table(self, name: str) -> None:
+        pass
+
+    @abstractmethod
+    def create_index(
+        self, index_name: str, table_name: str, index_col: str | list[str]
+    ) -> None:
+        pass
+
+    @abstractmethod
+    def drop_index(self, index_name: str) -> None:
+        pass
+
+    @abstractmethod
+    def has_index(self, index_name: str) -> bool:
         pass
