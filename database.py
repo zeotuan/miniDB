@@ -4,11 +4,12 @@ from typing import Optional, Union
 from table import Table
 
 
-class DataBase(ABC):
+class Database(ABC):
     @abstractmethod
-    def __init__(self) -> None:
+    def __init__(self, name: str, load: bool = True, verbose: bool = True) -> None:
         self.tables: dict = {}
-        self.__dir__
+        self._name = name
+        self.verbose: bool = verbose
 
     @abstractmethod
     def save_dbs(self) -> None:
