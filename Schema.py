@@ -12,4 +12,8 @@ class Schema(ABC):
         fkeys: dict,
         **kwargs,
     ) -> None:
-        pass
+        self.schema_version = schema_version
+        self.generation_counter = generation_counter
+        self.tables = tables
+        self.indexes = indexes
+        self.fkeys = fkeys

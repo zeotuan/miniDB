@@ -1,9 +1,16 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from Column import Column
+from Index import Index
 from typing import Optional
 
 
 class Table(ABC):
+    def __init__(self, name: str, cols: list[Column], indexes: list[Index]) -> None:
+        self.name = name
+        self.cols = cols
+        self.indexes = indexes
+
     @abstractmethod
     def get_column_by_name(self, column_name: str) -> list:
         pass

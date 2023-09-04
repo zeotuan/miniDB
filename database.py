@@ -1,15 +1,14 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Optional, Union
-from table import Table
 
 
 class Database(ABC):
     @abstractmethod
     def __init__(self, name: str, load: bool = True, verbose: bool = True) -> None:
-        self.tables: dict = {}
-        self._name = name
-        self.verbose: bool = verbose
+        self.tables = {}
+        self.name = name
+        self.verbose = verbose
 
     @abstractmethod
     def save_dbs(self) -> None:
