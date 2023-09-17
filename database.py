@@ -1,6 +1,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Optional, Union
+from SQLStatement import SQLCreateTable, SQLDropTable, SQLCreateIndex, SQLDropIndex
+from Table import Table
 
 
 class Database(ABC):
@@ -11,71 +12,25 @@ class Database(ABC):
         self.verbose = verbose
 
     @abstractmethod
-    def save_dbs(self) -> None:
+    def create_table(self, st: SQLCreateTable) -> None:
         pass
 
     @abstractmethod
-    def save_lock(self) -> None:
+    def drop_table(self, st: SQLDropTable) -> None:
         pass
 
     @abstractmethod
-    def load_db(self) -> None:
+    def create_index(self, st: SQLCreateIndex) -> None:
         pass
 
     @abstractmethod
-    def create_table(
-        self,
-        name: str,
-        col_names: list[str],
-        col_types: list[type],
-        p_key: Optional[str] = None,
-        unique=None,
-        load: Optional[list] = None,
-    ) -> None:
+    def drop_index(self, st: SQLDropIndex) -> None:
         pass
 
     @abstractmethod
-    def drop_table(self, name: str) -> None:
+    def get_table(self, name: str) -> Table:
         pass
 
     @abstractmethod
-    def load_table(
-        self,
-        name: str,
-        path: str,
-        col_names: list[str],
-        col_types: list[type],
-        p_key: Optional[str] = None,
-        infer_schema: bool = False,
-    ) -> None:
-        pass
-
-    @abstractmethod
-    def save_table(self, name: str, path: str) -> None:
-        pass
-
-    @abstractmethod
-    def is_table_locked(self, name: str) -> bool:
-        pass
-
-    @abstractmethod
-    def lock_table(self, name: str) -> None:
-        pass
-
-    @abstractmethod
-    def unlock_table(self, name: str) -> None:
-        pass
-
-    @abstractmethod
-    def create_index(
-        self, index_name: str, table_name: str, index_col: str | list[str]
-    ) -> None:
-        pass
-
-    @abstractmethod
-    def drop_index(self, index_name: str) -> None:
-        pass
-
-    @abstractmethod
-    def has_index(self, index_name: str) -> bool:
+    def is_idx_exist(self, name: str) -> bool:
         pass
