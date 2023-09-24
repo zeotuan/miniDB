@@ -4,3 +4,15 @@ class DatabaseAlreadyExistException(Exception):
 
 class DatabaseDoesNotExistException(Exception):
     pass
+
+
+class NoCurrentDatabaseException(Exception):
+    pass
+
+
+class TableAlreadyExistException(Exception):
+    pass
+
+
+class TableDoesNotExistException(Exception):
+    pass

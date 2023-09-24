@@ -11,7 +11,7 @@ class SQLCreateTable(SQL):
         has_pk = False
         if len(sql_vector) < pos:
             raise SyntaxError("Invalid length for create table statement")
-        self._db_name = sql_vector[pos]
+        self._tb_name = sql_vector[pos]
         pos += 1
         while is_attr:
             is_attr = False
@@ -26,8 +26,8 @@ class SQLCreateTable(SQL):
             pass
 
     @property
-    def db_name(self) -> str:
-        return self._db_name
+    def tb_name(self) -> str:
+        return self._tb_name
 
     @property
     def attributes(self) -> list[Attribute]:
