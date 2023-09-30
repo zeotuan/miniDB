@@ -49,7 +49,102 @@ class BlockHandle:
 
 class FileHandle:
     def __init__(self, path: str):
-        pass
+        self._first_file = FileInfo()
+        self._path = path
+
+    def get_file_info(
+        self, db_name: str, tb_name: str, file_type: int
+    ) -> FileInfo | None:
+        file_info = self._first_file
+        while file_info is not None:
+            if (
+                file_info.db_name == db_name
+                and file_info.file_type == file_type
+                and file_info.file_name == tb_name
+            ):
+                return file_info
+            file_info = file_info.next
+        return None
+
+    def add_file_info(self, file_info: FileInfo) -> None:
+        curr_file_info = self._first_file
+        if curr_file_info is None:
+            curr_file_info = file_info
+            return
+        while curr_file_info.next is not None:
+            curr_file_info = curr_file_info.next
+        curr_file_info.next = file_info
+
+    def get_block_info(self, file: FileInfo, block_pos: int) -> BlockInfo | None:
+        block = file.first_block
+        while block is not None:
+            if block.block_num == block_pos:
+                return block
+            block = block.next
+        return None
+
+    def add_block_info(self, add_block: BlockInfo) -> None:
+        assert add_block.file
+        block = add_block.file.first_block
+        if block is None:
+            add_block.file.first_block = block
+            return
+        while block.next is not None:
+            block = block.next
+        block.next = add_block
+        assert block.file is not None
+        block.file.inc_record_len()
+        block.file.inc_record_num()
+
+    def inc_age(self) -> None:
+        file = self._first_file
+        while file is not None:
+            block = file.first_block
+            while block is not None:
+                block.inc_age()
+                block = block.next
+            file = file.next
+
+    def recycle_block(self) -> BlockInfo:
+        curr_file = self._first_file
+        prev_oldest_block: BlockInfo | None = None
+        oldest_block = curr_file.first_block
+        assert oldest_block is not None
+
+        while curr_file is not None:
+            prev_block: BlockInfo | None = None
+            curr_block = curr_file.first_block
+            while curr_block is not None:
+                if curr_block.age > oldest_block.age:
+                    prev_oldest_block = prev_block
+                    oldest_block = curr_block
+                prev_block = curr_block
+                curr_block = curr_block.next
+            curr_file = curr_file.next
+
+        if oldest_block.dirty:
+            oldest_block.write_info(self._path)
+
+        if prev_oldest_block is None:
+            assert oldest_block.file is not None
+            oldest_block.file.first_block = oldest_block.next
+        else:
+            prev_oldest_block.next = oldest_block.next
+
+        oldest_block.reset_age()
+        oldest_block.next = None
+        return oldest_block
+
+    def write_to_disk(self) -> None:
+        curr_file = self._first_file
+        while curr_file is not None:
+            curr_block = curr_file.first_block
+            while curr_block is not None:
+                if curr_block.dirty:
+                    curr_block.write_info(self._path)
+                    curr_block.dirty = False
+                curr_block = curr_block.next
+            curr_file = curr_file.next
 
 
 class BlockInfo(object):
@@ -149,11 +244,11 @@ class FileInfo:
         self._first_block = block
 
     @property
-    def next_file(self) -> FileInfo | None:
+    def next(self) -> FileInfo | None:
         return self._next_file
 
-    @next_file.setter
-    def next_file(self, file: FileInfo | None) -> None:
+    @next.setter
+    def next(self, file: FileInfo | None) -> None:
         self._next_file = file
 
     def inc_record_num(self) -> None:
