@@ -117,7 +117,13 @@ class MiniDatabase:
         self._buffer_manager = BufferManager(self.path)
 
     def insert(self, st: SQLInsert) -> None:
-        pass
+        if not self.current_db:
+            raise NoCurrentDatabaseException
+
+        db = self.catalog_manager.get_db(self.current_db)
+        if db is None:
+            raise DatabaseDoesNotExistException
+        # TODO: actual insert
 
     def select(self, st: SQLSelect) -> None:
         pass

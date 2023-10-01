@@ -9,3 +9,5 @@ from SQLInsert import SQLInsert
 from SQLSelect import SQLSelect
 from SQLUpdate import SQLUpdate
 from SQLDelete import SQLDelete
+from SQLWhere import SQLWhere
+from SQLValue import SQLValue
