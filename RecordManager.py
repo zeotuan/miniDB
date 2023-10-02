@@ -8,7 +8,10 @@ from Buffer import BlockInfo
 
 class RecordManager:
     def __init__(
-        self, db_name: str, catalog_manager: CatalogManager, buffer_manager: BufferError
+        self,
+        db_name: str,
+        catalog_manager: CatalogManager,
+        buffer_manager: BufferManager,
     ) -> None:
         self.catalog_manager = catalog_manager
         self.buffer_manager = buffer_manager

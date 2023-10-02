@@ -10,6 +10,7 @@ from exceptions import (
 from CatalogManager import CatalogManager
 from Buffer import BufferManager
 from SQLStatement import *
+from RecordManager import RecordManager
 
 
 class MiniDatabase:
@@ -123,7 +124,10 @@ class MiniDatabase:
         db = self.catalog_manager.get_db(self.current_db)
         if db is None:
             raise DatabaseDoesNotExistException
-        # TODO: actual insert
+
+        assert self._buffer_manager is not None
+        rm = RecordManager(self.current_db, self.catalog_manager, self._buffer_manager)
+        rm.insert(st)
 
     def select(self, st: SQLSelect) -> None:
         pass
